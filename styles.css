@@ -1,0 +1,153 @@
+/* General Styles */
+
+.video-container {
+  position: relative;
+  width: 640px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Popup Ad Styles */
+
+.popup-ad {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.popup-ad.show {
+  display: flex;
+}
+
+.popup-ad-content {
+  max-width: 80%;
+  max-height: 80%;
+  overflow: hidden;
+}
+
+.popup-ad img,
+.popup-ad video {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.popup-ad-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #333;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.popup-ad-close-button:hover {
+  background: #555;
+}
+
+/* Spot Ad Styles */
+
+.spot-ad-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.spot-ad {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.spot-ad img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Banner Component Styles */
+
+.banner-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.banner-image {
+  width: 100%;
+  height: auto;
+  display: none;
+}
+
+.banner-image.active {
+  display: block;
+}
+
+/* Control Bar Styles */
+
+.control-bar {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-bar button {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.control-bar button:hover {
+  color: #007bff;
+}
+
+/* Speed Control Styles */
+
+.speed-control {
+  display: flex;
+  align-items: center;
+}
+
+.speed-slider {
+  margin-left: 10px;
+}
+
+.speed-value {
+  margin-left: 5px;
+}
+
+/* Banner Image Example */
+
+.banner-image-1 {
+  background-image: url("https://via.placeholder.com/640x360");
+}
+
+.banner-image-2 {
+  background-image: url("https://via.placeholder.com/640x360/ff0000/ffffff");
+}
+
+.banner-image-3 {
+  background-image: url("https://via.placeholder.com/640x360/00ff00/ffffff");
+}

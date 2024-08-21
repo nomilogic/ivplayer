@@ -1,232 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Video.js Player with Playlist, Popup Ad, and In-Between Ads</title>
+  <head>
+    <meta charset="utf-8" />
+    <title>Modular Video Player</title>
 
-  <!-- Video.js CSS -->
-  <link href="https://vjs.zencdn.net/8.0.0/video-js.css" rel="stylesheet">
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/8.0.0/video-js.css" rel="stylesheet" />
 
-  <!-- Video.js JavaScript -->
-  <script src="https://vjs.zencdn.net/8.0.0/video.min.js"></script>
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
 
-  <!-- Video.js Contrib Ads CSS and JS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/7.5.2/videojs-contrib-ads.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/7.5.2/videojs-contrib-ads.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="video-container">
+      <!-- Popup Ad -->
+      <div id="popupAd" class="popup-ad">
+        <div>
+          <p>
+            Popup ad content here. You can place your ad content or image here.
+          </p>
+          <button id="closePopupAd">Close</button>
+        </div>
+      </div>
 
-  <style>
-    .video-container {
-      position: relative;
-      max-width: 640px;
-      margin: auto;
-      padding-top: 20px;
-      text-align: center;
-    }
+      <!-- Video Player -->
+      <video
+        id="videoPlayer"
+        class="video-js vjs-default-skin"
+        controls
+        preload="auto"
+        width="640"
+        height="360"
+      >
+        <source
+          src="https://d2zihajmogu5jn.cloudfront.net/elephantsdream/ed_hd.mp4"
+          type="video/mp4"
+        />
+        <track
+          kind="captions"
+          src="captions.en.vtt"
+          srclang="en"
+          label="English"
+          default
+        />
+      </video>
 
-    .controls {
-      margin-top: 10px;
-    }
+      <!-- Control Bar -->
+      <div class="control-bar">
+        <button id="playBtn"><i class="fa fa-play"></i></button>
+        <button id="pauseBtn"><i class="fa fa-pause"></i></button>
+        <button id="stopBtn"><i class="fa fa-stop"></i></button>
+        <button id="rewindBtn"><i class="fa fa-undo"></i></button>
+        <button id="fwdBtn"><i class="fa fa-forward"></i></button>
+        <button id="prevBtn"><i class="fa fa-step-backward"></i></button>
+        <button id="nextBtn"><i class="fa fa-step-forward"></i></button>
+        <div class="speed-control">
+          <label for="speedSlider">Speed: </label>
+          <input
+            type="range"
+            id="speedSlider"
+            min="0.5"
+            max="10"
+            step="0.5"
+            value="1"
+          />
+          <span id="speedValue">2x</span>
+        </div>
+        <button id="popupAdButton"><i class="fa fa-bullhorn"></i></button>
+        <div id="popupAd" class="popup-ad"></div>
 
-    .controls button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+        <!-- Spot Ad -->
+        <div id="spotAd" class="spot-ad"></div>
 
-    .playlist-controls {
-      margin-top: 10px;
-    }
-
-    .playlist-controls button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .ads-banner {
-      margin-top: 10px;
-      padding: 10px;
-      background-color: #f8f9fa;
-      border: 1px solid #dee2e6;
-      overflow-x: scroll;
-      white-space: nowrap;
-    }
-
-    .ads-banner img {
-      height: 80px;
-      margin-right: 10px;
-    }
-
-    .popup-ad {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-      width: 80%;
-      height: 80%;
-    }
-
-    .popup-ad button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .skip-button {
-      background-color: #ff0000;
-      color: #fff;
-    }
-
-    .skip-button:hover {
-      background-color: #cc0000;
-    }
-  </style>
-</head>
-<body>
-
-<div class="video-container">
-  <!-- Popup Ad -->
-  <div id="popupAd" class="popup-ad">
-    <div>
-      <p>Popup ad goes here. You can place your ad content or image here.</p>
-      <button id="closePopupAd">Close</button>
+        <!-- Banner Component -->
+        <div id="bannerComponent" class="banner-component">
+          <img
+            src="https://example.com/banner1.jpg"
+            class="banner-image"
+            alt="Banner 1"
+          />
+          <img
+            src="https://example.com/banner2.jpg"
+            class="banner-image"
+            alt="Banner 2"
+          />
+          <img
+            src="https://example.com/banner3.jpg"
+            class="banner-image"
+            alt="Banner 3"
+          />
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Video Player -->
-  <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360" poster="http://d2zihajmogu5jn.cloudfront.net/elephantsdream/poster.png">
-    <!-- Playlist Source URLs -->
-    <source src="https://d2zihajmogu5jn.cloudfront.net/elephantsdream/ed_hd.mp4" type="video/mp4">
-    <source src="https://d2zihajmogu5jn.cloudfront.net/elephantsdream/ed_hd.ogg" type="video/ogg">
-    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-  </video>
+    <!-- Video.js -->
+    <script src="https://vjs.zencdn.net/8.0.0/video.min.js"></script>
 
-  <!-- Controls for video playback -->
-  <div class="controls">
-    <button id="playButton">Play</button>
-    <button id="pauseButton">Pause</button>
-    <button id="stopButton">Stop</button>
-    <button id="rewindButton">Rewind 15s</button>
-    <button id="fastForwardButton">Fast Forward 15s</button>
-    <button id="speed0.5Button">0.5x Speed</button>
-    <button id="normalSpeedButton">Normal Speed</button>
-    <button id="speed2xButton">2x Speed</button>
-    <button id="speed4xButton">4x Speed</button>
-    <button id="popupAdButton">Show Popup Ad</button>
-  </div>
-
-  <!-- Playlist Controls -->
-  <div class="playlist-controls">
-    <button id="prevButton">Previous</button>
-    <button id="nextButton">Next</button>
-  </div>
-
-  <!-- Ads Banner -->
-  <div class="ads-banner">
-    <img src="https://via.placeholder.com/150x80?text=Ad+1" alt="Ad 1">
-    <img src="https://via.placeholder.com/150x80?text=Ad+2" alt="Ad 2">
-    <img src="https://via.placeholder.com/150x80?text=Ad+3" alt="Ad 3">
-    <img src="https://via.placeholder.com/150x80?text=Ad+4" alt="Ad 4">
-  </div>
-</div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const player = videojs('videoPlayer');
-
-    // Playlist setup
-    const playlist = [
-      'https://d2zihajmogu5jn.cloudfront.net/elephantsdream/ed_hd.mp4',
-      'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-      'https://www.hochmuth.com/mp4/Hola.mp4',
-      'https://www.radiantmediaplayer.com/media/bbb-360p.mp4',
-      'https://www.radiantmediaplayer.com/media/bbb-480p.mp4'
-    ];
-
-    let currentIndex = 0;
-
-    function loadVideo(index) {
-      if (index >= 0 && index < playlist.length) {
-        player.src({ type: 'video/mp4', src: playlist[index] });
-        player.play();
-        currentIndex = index;
-      }
-    }
-
-    document.getElementById('playButton').addEventListener('click', () => player.play());
-    document.getElementById('pauseButton').addEventListener('click', () => player.pause());
-    document.getElementById('stopButton').addEventListener('click', () => {
-      player.pause();
-      player.currentTime(0);
-    });
-    document.getElementById('rewindButton').addEventListener('click', () => {
-      const newTime = player.currentTime() - 15;
-      player.currentTime(Math.max(newTime, 0));
-    });
-    document.getElementById('fastForwardButton').addEventListener('click', () => {
-      const newTime = player.currentTime() + 15;
-      player.currentTime(Math.min(newTime, player.duration()));
-    });
-    document.getElementById('speed0.5Button').addEventListener('click', () => player.playbackRate(0.5));
-    document.getElementById('normalSpeedButton').addEventListener('click', () => player.playbackRate(1));
-    document.getElementById('speed2xButton').addEventListener('click', () => player.playbackRate(2));
-    document.getElementById('speed4xButton').addEventListener('click', () => player.playbackRate(4));
-
-    document.getElementById('popupAdButton').addEventListener('click', () => {
-      const popupAd = document.getElementById('popupAd');
-      popupAd.style.display = 'flex';
-    });
-
-    document.getElementById('closePopupAd').addEventListener('click', () => {
-      const popupAd = document.getElementById('popupAd');
-      popupAd.style.display = 'none';
-    });
-
-    document.getElementById('prevButton').addEventListener('click', () => {
-      loadVideo((currentIndex - 1 + playlist.length) % playlist.length);
-    });
-
-    document.getElementById('nextButton').addEventListener('click', () => {
-      loadVideo((currentIndex + 1) % playlist.length);
-    });
-
-    // Setup Video.js Contrib Ads Plugin
-    player.ads();
-
-    player.on('adstart', () => {
-      console.log('Ad started');
-    });
-
-    player.on('adend', () => {
-      console.log('Ad ended');
-    });
-
-    function showInBetweenAd() {
-      player.ads.startLinearAdMode();
-      document.getElementById('popupAd').style.display = 'flex'; // Simulate an ad popup
-      setTimeout(() => {
-        player.ads.endLinearAdMode();
-        document.getElementById('popupAd').style.display = 'none'; // Close ad popup after 5 seconds
-      }, 5000); // Show ad for 5 seconds
-    }
-
-    player.on('timeupdate', () => {
-      if (player.currentTime() > 20 && player.currentTime() < 25) {
-        showInBetweenAd();
-      }
-    });
-  });
-</script>
-
-</body>
+    <!-- Custom JS -->
+    <script src="js/ivplayer.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/banners.js"></script>
+    <script src="js/popupAd.js"></script>
+    <script src="js/spotAd.js"></script>
+  </body>
 </html>
