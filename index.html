@@ -1,111 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Modular Video Player</title>
+<head>
+  <meta charset="utf-8" />
+  <title>Modular Video Player</title>
 
-    <!-- Video.js CSS -->
-    <link href="https://vjs.zencdn.net/8.0.0/video-js.css" rel="stylesheet" />
+  <!-- Video.js CSS -->
+  <link href="https://vjs.zencdn.net/8.0.0/video-js.css" rel="stylesheet" />
 
-    <!-- Font Awesome for Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
+  <!-- Font Awesome for Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="video-container">
-      <!-- Popup Ad -->
-      <div id="popupAd" class="popup-ad">
-        <div>
-          <p>
-            Popup ad content here. You can place your ad content or image here.
-          </p>
-          <button id="closePopupAd">Close</button>
-        </div>
-      </div>
-
-      <!-- Video Player -->
-      <video
-        id="videoPlayer"
-        class="video-js vjs-default-skin"
-        controls
-        preload="auto"
-        width="640"
-        height="360"
-      >
-        <source
-          src="https://d2zihajmogu5jn.cloudfront.net/elephantsdream/ed_hd.mp4"
-          type="video/mp4"
-        />
-        <track
-          kind="captions"
-          src="captions.en.vtt"
-          srclang="en"
-          label="English"
-          default
-        />
-      </video>
-
-      <!-- Control Bar -->
-      <div class="control-bar">
-        <button id="playBtn"><i class="fa fa-play"></i></button>
-        <button id="pauseBtn"><i class="fa fa-pause"></i></button>
-        <button id="stopBtn"><i class="fa fa-stop"></i></button>
-        <button id="rewindBtn"><i class="fa fa-undo"></i></button>
-        <button id="fwdBtn"><i class="fa fa-forward"></i></button>
-        <button id="prevBtn"><i class="fa fa-step-backward"></i></button>
-        <button id="nextBtn"><i class="fa fa-step-forward"></i></button>
-        <div class="speed-control">
-          <label for="speedSlider">Speed: </label>
-          <input
-            type="range"
-            id="speedSlider"
-            min="0.5"
-            max="10"
-            step="0.5"
-            value="1"
-          />
-          <span id="speedValue">2x</span>
-        </div>
-        <button id="popupAdButton"><i class="fa fa-bullhorn"></i></button>
-        <div id="popupAd" class="popup-ad"></div>
-
-        <!-- Spot Ad -->
-        <div id="spotAd" class="spot-ad"></div>
-
-        <!-- Banner Component -->
-        <div id="bannerComponent" class="banner-component">
-          <img
-            src="https://example.com/banner1.jpg"
-            class="banner-image"
-            alt="Banner 1"
-          />
-          <img
-            src="https://example.com/banner2.jpg"
-            class="banner-image"
-            alt="Banner 2"
-          />
-          <img
-            src="https://example.com/banner3.jpg"
-            class="banner-image"
-            alt="Banner 3"
-          />
-        </div>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="video-container">
+    <!-- Popup Ad -->
+    <div id="popupAd" class="popup-ad">
+      <div>
+        <p>Popup ad content here. You can place your ad content or image here.</p>
+        <button id="closePopupAd">Close</button>
       </div>
     </div>
 
-    <!-- Video.js -->
-    <script src="https://vjs.zencdn.net/8.0.0/video.min.js"></script>
+    <!-- Video Player -->
+    <video
+      id="videoPlayer"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      width="640"
+      height="360"
+    >
+      <source
+        src="https://d2zihajmogu5jn.cloudfront.net/elephantsdream/ed_hd.mp4"
+        type="video/mp4"
+      />
+      <track
+        kind="captions"
+        src="captions.en.vtt"
+        srclang="en"
+        label="English"
+        default
+      />
+    </video>
+    <div class="spot-container"></div>
 
-    <!-- Custom JS -->
-    <script src="js/ivplayer.js"></script>
-    <script src="js/controls.js"></script>
-    <script src="js/banners.js"></script>
-    <script src="js/popupAd.js"></script>
-    <script src="js/spotAd.js"></script>
-  </body>
+    <!-- Control Bar -->
+    <div class="control-bar">
+      <button id="playBtn"><i class="fa fa-play"></i></button>
+      <button id="pauseBtn"><i class="fa fa-pause"></i></button>
+      <button id="stopBtn"><i class="fa fa-stop"></i></button>
+      <button id="rewindBtn"><i class="fa fa-undo"></i></button>
+      <button id="fwdBtn"><i class="fa fa-forward"></i></button>
+      <button id="prevBtn"><i class="fa fa-step-backward"></i></button>
+      <button id="nextBtn"><i class="fa fa-step-forward"></i></button>
+      <div class="speed-control">
+        <label for="speedSlider">Speed: </label>
+        <input
+          type="range"
+          id="speedSlider"
+          min="0.5"
+          max="10"
+          step="0.5"
+          value="1"
+        />
+        <span id="speedValue">1x</span>
+      </div>
+      <button id="popupAdButton"><i class="fa fa-bullhorn"></i></button>
+    </div>
+
+    <!-- Spot Ad -->
+
+    <!-- Banner Component -->
+    
+  </div>
+  <div id="bannerComponent" class="banner-container">
+    <img src="./images/pic1.jpg" class="banner-image" alt="Banner 1" />
+    <img src="./images/pic2.jpg" class="banner-image" alt="Banner 2" />
+    <img src="./images/pic3.jpg" class="banner-image" alt="Banner 3" />
+  </div>
+  <!-- Video.js -->
+  <script src="https://vjs.zencdn.net/8.0.0/video.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="js/ivplayer.js"></script>
+  <script src="js/banners.js"></script>
+  <script src="js/popupAd.js"></script>
+  <script src="js/spotAd.js"></script>
+  <script src="js/controls.js"></script>
+
+</body>
 </html>

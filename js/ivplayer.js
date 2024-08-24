@@ -1,3 +1,36 @@
+
+
+
+class EventEmitter {
+  constructor() {
+    this.events = {};
+  }
+
+  // Method to add an event listener
+  addEventListener(eventType, callback) {
+    if (!this.events[eventType]) {
+      this.events[eventType] = [];
+    }
+    this.events[eventType].push(callback);
+  }
+
+  // Method to remove an event listener
+  removeEventListener(eventType, callback) {
+    if (!this.events[eventType]) return;
+
+    this.events[eventType] = this.events[eventType].filter(listener => listener !== callback);
+  }
+
+  // Method to trigger an event
+  triggerEvent(eventType, data = null) {
+    if (!this.events[eventType]) return;
+
+    this.events[eventType].forEach(callback => {
+      callback(data);
+    });
+  }
+}
+
 class Events {
   static PLAYER_READY = "playerReady";
   static PLAYLIST_LOADED = "playlistLoaded";
@@ -7,6 +40,7 @@ class Events {
   static POPUP_AD_SHOWN = "popupAdShown";
   static INBETWEEN_AD_SHOWN = "inBetweenAdShown";
   static VIDEO_ENDED = "videoEnded";
+  static ON_TIME_UPDATE = "timeupdate";
   static PLAYLIST_ENDED = "playlistEnded";
   static FULLSCREEN_TOGGLED = "fullscreenToggled";
   static MUTE_TOGGLED = "muteToggled";
@@ -18,9 +52,9 @@ class Events {
   static SPOT_AD_CLICKED = "spotAdClicked";
   static SPOT_AD_IMPRESSION = "spotAdImpression";
 }
-
-class CustomVideoPlayer {
+class CustomVideoPlayer extends EventEmitter {
   constructor(playerId, videoSources, options = {}) {
+    super();  // Call the parent class constructor
     this.playerId = playerId;
     this.videoSources = videoSources;
     this.options = options;
@@ -151,6 +185,8 @@ class CustomVideoPlayer {
 
   bindEvents() {
     this.player.on("timeupdate", () => {
+    //  console.log(this.player.currentTime())
+      this.triggerEvent(Events.ON_TIME_UPDATE, this.player.currentTime());
       if (this.player.currentTime() > 120 && !this.adShown) {
         // Example: show ad after 2 minutes
         this.triggerEvent(Events.INBETWEEN_AD_SHOWN);
@@ -164,66 +200,13 @@ class CustomVideoPlayer {
     });
 
     // Spot ad click event handler
-    document.addEventListener(Events.SPOT_AD_CLICKED, (e) => {
-      this.triggerEvent(Events.SPOT_AD_CLICKED, e.detail);
+    this.addEventListener(Events.SPOT_AD_CLICKED, (data) => {
+      this.triggerEvent(Events.SPOT_AD_CLICKED, data);
     });
 
     // Spot ad impression event handler
-    document.addEventListener(Events.SPOT_AD_IMPRESSION, (e) => {
-      this.triggerEvent(Events.SPOT_AD_IMPRESSION, e.detail);
+    this.addEventListener(Events.SPOT_AD_IMPRESSION, (data) => {
+      this.triggerEvent(Events.SPOT_AD_IMPRESSION, data);
     });
   }
-
-  on(event, callback) {
-    this.player.on(event, callback);
-  }
-
-  triggerEvent(eventName, data = null) {
-    const event = new CustomEvent(eventName, { detail: data });
-    document.dispatchEvent(event);
-  }
 }
-
-const player = new CustomVideoPlayer("videoPlayer", [
-  "https://d2zihajmogu5jn.cloudfront.net/elephantsdream/ed_hd.mp4",
-  "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-  "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
-  "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
-]);
-
-// Example of event handling
-document.addEventListener(Events.PLAYLIST_LOADED, () =>
-  console.log("Playlist loaded")
-);
-
-document.addEventListener(Events.VIDEO_PLAYED, () =>
-  console.log("Video started playing")
-);
-
-// Binding controls for player actions
-document
-  .getElementById("playBtn")
-  .addEventListener("click", () => player.play());
-document
-  .getElementById("pauseBtn")
-  .addEventListener("click", () => player.pause());
-document
-  .getElementById("stopBtn")
-  .addEventListener("click", () => player.stop());
-document
-  .getElementById("rewindBtn")
-  .addEventListener("click", () => player.rewind(15));
-document
-  .getElementById("fwdBtn")
-  .addEventListener("click", () => player.fastForward(15));
-document
-  .getElementById("prevBtn")
-  .addEventListener("click", () => player.playPrevVideo());
-document
-  .getElementById("nextBtn")
-  .addEventListener("click", () => player.playNextVideo());
-document.getElementById("speedSlider").addEventListener("input", (e) => {
-  const speed = e.target.value;
-  player.setSpeed(speed);
-  document.getElementById("speedValue").textContent = `${speed}x`;
-});

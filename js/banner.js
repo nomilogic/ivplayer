@@ -1,33 +1,18 @@
-class BannerComponent {
+class BannerAd {
   constructor(elementId) {
     this.bannerElement = document.getElementById(elementId);
     this.bannerImages = this.bannerElement.querySelectorAll(".banner-image");
     this.currentIndex = 0;
-    this.bannerInterval = null;
 
     this.initBanner();
   }
 
   initBanner() {
+    if (this.bannerImages.length === 0) return;
+
     this.showBanner(this.currentIndex);
     this.bannerInterval = setInterval(() => this.nextBanner(), 5000); // Change banner every 5 seconds
-    this.createNavigationControls();
     this.createIndicators();
-  }
-
-  createNavigationControls() {
-    this.prevButton = document.createElement("button");
-    this.prevButton.textContent = "Previous";
-    this.prevButton.className = "banner-control";
-    this.prevButton.addEventListener("click", () => this.prevBanner());
-
-    this.nextButton = document.createElement("button");
-    this.nextButton.textContent = "Next";
-    this.nextButton.className = "banner-control";
-    this.nextButton.addEventListener("click", () => this.nextBanner());
-
-    this.bannerElement.appendChild(this.prevButton);
-    this.bannerElement.appendChild(this.nextButton);
   }
 
   createIndicators() {
@@ -48,9 +33,6 @@ class BannerComponent {
   showBanner(index) {
     this.bannerImages.forEach((img, i) => {
       img.classList.toggle("active", i === index);
-      if (i === index) {
-        this.trackClick(i);
-      }
     });
     this.currentIndex = index;
     this.updateIndicators();
@@ -61,33 +43,17 @@ class BannerComponent {
     this.showBanner(this.currentIndex);
   }
 
-  prevBanner() {
-    this.currentIndex =
-      (this.currentIndex - 1 + this.bannerImages.length) %
-      this.bannerImages.length;
-    this.showBanner(this.currentIndex);
-  }
-
   updateIndicators() {
+    if (!this.indicatorsContainer) return;
+
     const indicators = this.indicatorsContainer.querySelectorAll(".indicator");
     indicators.forEach((indicator, i) => {
       indicator.classList.toggle("active", i === this.currentIndex);
     });
   }
-
-  trackImpressions() {
-    this.bannerImages.forEach((img, index) => {
-      if (img.classList.contains("active")) {
-        console.log(`Impression recorded for banner ${index}`);
-        // Send impression analytics data here
-      }
-    });
-  }
-
-  trackClick(index) {
-    console.log(`Click recorded for banner ${index}`);
-    // Send click analytics data here
-  }
 }
 
-// Usage example
+// Initialize BannerAd on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+  new BannerAd('bannerComponent');
+});

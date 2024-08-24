@@ -40,6 +40,12 @@ class PopupAd {
 
     // Track impressions for analytics
     this.trackImpression();
+    this.adElement.addEventListener("click", (e) => {
+      this.triggerEvent(Events.SPOT_AD_CLICKED, e.detail);
+    });
+
+    // Spot ad impression event handler
+    
   }
 
   setSize(size) {
@@ -126,6 +132,7 @@ class PopupAd {
       this.triggerEvent(Events.POPUP_AD_IMPRESSION, { timestamp: Date.now() });
     }
   }
+
 
   triggerEvent(eventName, data = null) {
     const event = new CustomEvent(eventName, { detail: data });
